@@ -1,8 +1,9 @@
 name = "the-collective-clock"
+pages_build_output_dir = ".vercel/output/static"
 compatibility_date = "2024-09-23"
 compatibility_flags = ["nodejs_compat"]
 
 [vars]
 IP_HASH_SALT = "change-me-to-a-random-secret"
 TURSO_DATABASE_URL = "libsql://time-perception-survey-kennethpeace.aws-ap-northeast-1.turso.io"
-# TURSO_AUTH_TOKEN = "" # Set via `wrangler secret put TURSO_AUTH_TOKEN`
+# TURSO_AUTH_TOKEN = "" # Set via Cloudflare dashboard environment variables
