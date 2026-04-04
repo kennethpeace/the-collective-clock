@@ -1,0 +1,8 @@
+name = "the-collective-clock"
+compatibility_date = "2024-09-23"
+compatibility_flags = ["nodejs_compat"]
+
+[vars]
+IP_HASH_SALT = "change-me-to-a-random-secret"
+TURSO_DATABASE_URL = "libsql://time-perception-survey-kennethpeace.aws-ap-northeast-1.turso.io"
+# TURSO_AUTH_TOKEN = "" # Set via `wrangler secret put TURSO_AUTH_TOKEN`
