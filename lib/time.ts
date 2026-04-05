@@ -11,7 +11,7 @@ export function minutesToLabel(minutes: number): string {
 /** Generate all 15-min tick labels from 12 PM to 12 AM */
 export function generateTimeSlots(): { minutes: number; label: string }[] {
   const slots: { minutes: number; label: string }[] = [];
-  for (let m = 0; m <= 720; m += 15) {
+  for (let m = 0; m <= 720; m += 30) {
     slots.push({ minutes: m, label: minutesToLabel(m) });
   }
   return slots;

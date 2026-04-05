@@ -59,8 +59,8 @@ export async function POST(request: NextRequest) {
         continue;
       }
 
-      const startTime = Math.max(0, Math.min(720, Math.round(entry.startTime / 15) * 15));
-      const endTime = Math.max(0, Math.min(720, Math.round(entry.endTime / 15) * 15));
+      const startTime = Math.max(0, Math.min(720, Math.round(entry.startTime / 30) * 30));
+      const endTime = Math.max(0, Math.min(720, Math.round(entry.endTime / 30) * 30));
 
       if (startTime >= endTime) continue;
 

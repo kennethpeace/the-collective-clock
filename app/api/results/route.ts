@@ -4,7 +4,7 @@ import { getDb } from "@/lib/db";
 import { responses } from "@/lib/schema";
 import { NextResponse } from "next/server";
 
-const SLOT_COUNT = 49; // 0 to 720, step 15 → 49 ticks
+const SLOT_COUNT = 25; // 0 to 720, step 30 → 25 ticks
 
 function minutesToLabel(minutes: number): string {
   const totalMinutes = minutes + 12 * 60;
@@ -25,7 +25,7 @@ export async function GET() {
     const userCategories = new Set<string>();
 
     for (let i = 0; i < SLOT_COUNT; i++) {
-      const slotMinutes = i * 15;
+      const slotMinutes = i * 30;
       let afternoon = 0;
       let evening = 0;
       let night = 0;

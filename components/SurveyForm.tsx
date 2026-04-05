@@ -38,8 +38,27 @@ export function SurveyForm() {
     });
   }, []);
 
+  const TWO_HOURS = 120;
+
   const handleChange = (category: Category, value: [number, number]) => {
-    setRanges((prev) => ({ ...prev, [category]: value }));
+    setRanges((prev) => {
+      const next = { ...prev, [category]: value };
+
+      if (category === "afternoon") {
+        const eveningStart = value[1];
+        const eveningEnd = Math.min(eveningStart + TWO_HOURS, 720);
+        next.evening = [eveningStart, eveningEnd];
+        const nightStart = eveningEnd;
+        const nightEnd = Math.min(nightStart + TWO_HOURS, 720);
+        next.night = [nightStart, nightEnd];
+      } else if (category === "evening") {
+        const nightStart = value[1];
+        const nightEnd = Math.min(nightStart + TWO_HOURS, 720);
+        next.night = [nightStart, nightEnd];
+      }
+
+      return next;
+    });
   };
 
   const handleSubmit = async () => {

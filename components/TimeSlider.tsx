@@ -25,7 +25,7 @@ export function TimeSlider({ label, color, value, onChange }: TimeSliderProps) {
         onValueChange={(v) => onChange(v as [number, number])}
         min={0}
         max={720}
-        step={15}
+        step={30}
         minStepsBetweenThumbs={1}
       >
         <Slider.Track className="bg-gray-200 dark:bg-gray-700 relative grow rounded-full h-[6px]">
