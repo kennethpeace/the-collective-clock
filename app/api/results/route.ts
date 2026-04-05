@@ -8,7 +8,7 @@ const SLOT_COUNT = 49; // 0 to 720, step 15 → 49 ticks
 
 function minutesToLabel(minutes: number): string {
   const totalMinutes = minutes + 12 * 60;
-  const h = Math.floor(totalMinutes / 60);
+  const h = Math.floor(totalMinutes / 60) % 24;
   const m = totalMinutes % 60;
   const period = h >= 12 ? "PM" : "AM";
   const displayH = h > 12 ? h - 12 : h === 0 ? 12 : h;

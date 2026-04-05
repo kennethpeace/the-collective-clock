@@ -1,7 +1,7 @@
 /** Convert minutes-from-noon (0–720) to display string like "3:45 PM" */
 export function minutesToLabel(minutes: number): string {
   const totalMinutes = minutes + 12 * 60; // offset from midnight
-  const h = Math.floor(totalMinutes / 60);
+  const h = Math.floor(totalMinutes / 60) % 24;
   const m = totalMinutes % 60;
   const period = h >= 12 ? "PM" : "AM";
   const displayH = h > 12 ? h - 12 : h === 0 ? 12 : h;
