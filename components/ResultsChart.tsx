@@ -41,7 +41,7 @@ export function ResultsChart({ data, totalResponses }: ResultsChartProps) {
         </span>
       </div>
       <ResponsiveContainer width="100%" height={320}>
-        <AreaChart data={data} margin={{ top: 5, right: 10, left: -10, bottom: 0 }}>
+        <AreaChart data={data} margin={{ top: 5, right: 10, left: -10, bottom: 50 }}>
           <defs>
             <linearGradient id="gradAfternoon" x1="0" y1="0" x2="0" y2="1">
               <stop offset="5%" stopColor={CATEGORY_CONFIG.afternoon.color} stopOpacity={isDark ? 0.5 : 0.4} />
@@ -60,9 +60,10 @@ export function ResultsChart({ data, totalResponses }: ResultsChartProps) {
           <XAxis
             dataKey="minutes"
             tickFormatter={(m) => minutesToLabel(m)}
-            tick={{ fontSize: 10, fill: isDark ? "#9ca3af" : "#6b7280" }}
+            tick={{ fontSize: 10, fill: isDark ? "#9ca3af" : "#6b7280", angle: -45, textAnchor: "end" }}
             ticks={[0, 90, 180, 270, 360, 450, 540, 630, 720]}
             interval={0}
+            height={60}
             stroke={isDark ? "#4b5563" : "#e5e7eb"}
           />
           <YAxis
