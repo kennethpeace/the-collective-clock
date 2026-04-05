@@ -16,16 +16,25 @@ interface SubmitEntry {
 interface SubmitBody {
   browserId?: string;
   entries: SubmitEntry[];
+  country?: string | null;
 }
 
 export async function POST(request: NextRequest) {
   try {
-    const salt = process.env.IP_HASH_SALT ?? "default-salt";
+    const { getRequestContext } = await import("@cloudflare/next-on-pages");
+    let salt = "default-salt";
+    try {
+      const { env } = getRequestContext();
+      salt = (env as Record<string, string>).IP_HASH_SALT ?? salt;
+    } catch {
+      salt = process.env.IP_HASH_SALT ?? salt;
+    }
     const body: SubmitBody = await request.json();
 
     // Support both new format { browserId, entries } and legacy array format
     const entries = Array.isArray(body) ? body as unknown as SubmitEntry[] : body.entries;
     const browserId = Array.isArray(body) ? undefined : body.browserId;
+    const country = Array.isArray(body) ? null : (body.country || null);
 
     if (!Array.isArray(entries) || entries.length === 0) {
       return NextResponse.json({ error: "Invalid request body" }, { status: 400 });
@@ -62,12 +71,14 @@ export async function POST(request: NextRequest) {
           category: entry.category as typeof VALID_CATEGORIES[number],
           startTime,
           endTime,
+          country,
         })
         .onConflictDoUpdate({
           target: [responses.userHash, responses.category],
           set: {
             startTime,
             endTime,
+            country,
             createdAt: new Date().toISOString(),
           },
         });

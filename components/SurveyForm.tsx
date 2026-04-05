@@ -1,10 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { TimeSlider } from "./TimeSlider";
 import { ResultsChart, type ChartDataPoint } from "./ResultsChart";
+import { CountryList, type CountryStat } from "./CountryList";
 import { CATEGORIES, CATEGORY_CONFIG, type Category } from "@/lib/time";
 import { getOrCreateBrowserId } from "@/lib/browser-id";
+import { detectCountry } from "@/lib/geolocation";
 import { Send, Loader2, BarChart3, RefreshCw } from "lucide-react";
 
 type Ranges = Record<Category, [number, number]>;
@@ -18,6 +20,7 @@ const defaultRanges: Ranges = {
 interface ResultsData {
   data: ChartDataPoint[];
   totalResponses: number;
+  countryStats: CountryStat[];
 }
 
 export function SurveyForm() {
@@ -26,6 +29,14 @@ export function SurveyForm() {
   const [results, setResults] = useState<ResultsData | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [refreshing, setRefreshing] = useState(false);
+  const countryRef = useRef<string | null>(null);
+
+  // Detect country on mount (silent — no prompt to user)
+  useEffect(() => {
+    detectCountry().then((code) => {
+      countryRef.current = code;
+    });
+  }, []);
 
   const handleChange = (category: Category, value: [number, number]) => {
     setRanges((prev) => ({ ...prev, [category]: value }));
@@ -45,7 +56,7 @@ export function SurveyForm() {
       const res = await fetch("/api/submit", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ browserId, entries }),
+        body: JSON.stringify({ browserId, entries, country: countryRef.current }),
       });
 
       if (!res.ok) {
@@ -88,6 +99,9 @@ export function SurveyForm() {
           </p>
         </div>
         <ResultsChart data={results.data} totalResponses={results.totalResponses} />
+        {results.countryStats && results.countryStats.length > 0 && (
+          <CountryList stats={results.countryStats} />
+        )}
         <button
           onClick={handleRefresh}
           disabled={refreshing}
@@ -102,6 +116,12 @@ export function SurveyForm() {
 
   return (
     <div className="space-y-8">
+      <div className="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-4">
+        <p className="text-xs text-gray-500 dark:text-gray-400 text-center">
+          Drag the handles on each slider to set when you think each
+          time period starts and ends.
+        </p>
+      </div>
       <div className="space-y-6">
         {CATEGORIES.map((cat) => (
           <TimeSlider

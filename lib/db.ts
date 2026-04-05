@@ -1,20 +1,21 @@
 import { drizzle } from "drizzle-orm/libsql";
-import { createClient } from "@libsql/client/web";
+import { createClient } from "@libsql/client/http";
+import { getRequestContext } from "@cloudflare/next-on-pages";
 import * as schema from "./schema";
 
-let _db: ReturnType<typeof createDb> | null = null;
-
-function createDb() {
-  const client = createClient({
-    url: process.env.TURSO_DATABASE_URL!,
-    authToken: process.env.TURSO_AUTH_TOKEN,
-  });
-  return drizzle(client, { schema });
+function getEnv(key: string): string {
+  try {
+    const ctx = getRequestContext();
+    return (ctx.env as Record<string, string>)[key] ?? "";
+  } catch {
+    return process.env[key] ?? "";
+  }
 }
 
 export function getDb() {
-  if (!_db) {
-    _db = createDb();
-  }
-  return _db;
+  const client = createClient({
+    url: getEnv("TURSO_DATABASE_URL"),
+    authToken: getEnv("TURSO_AUTH_TOKEN"),
+  });
+  return drizzle(client, { schema });
 }

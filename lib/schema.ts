@@ -11,6 +11,7 @@ export const responses = sqliteTable(
     }).notNull(),
     startTime: integer("start_time").notNull(), // minutes from noon (0–720)
     endTime: integer("end_time").notNull(),
+    country: text("country"), // ISO 3166-1 alpha-2 code or null
     createdAt: text("created_at").default(sql`CURRENT_TIMESTAMP`),
   },
   (table) => [

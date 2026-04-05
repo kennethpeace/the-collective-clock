@@ -21,14 +21,6 @@ export default function Home() {
           </p>
         </div>
 
-        {/* Instruction */}
-        <div className="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-4">
-          <p className="text-xs text-gray-500 dark:text-gray-400 text-center">
-            Drag the handles on each slider to set when you think each
-            time period starts and ends.
-          </p>
-        </div>
-
         {/* Survey */}
         <SurveyForm />
 

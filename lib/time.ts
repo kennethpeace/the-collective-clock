@@ -28,18 +28,18 @@ export const CATEGORY_CONFIG: Record<
     label: "Afternoon",
     color: "rgb(234, 179, 8)",
     fillColor: "rgba(234, 179, 8, 0.3)",
-    defaultRange: [0, 300], // 12 PM – 5 PM
+    defaultRange: [0, 60], // 12 PM – 1 PM
   },
   evening: {
     label: "Evening",
     color: "rgb(249, 115, 22)",
     fillColor: "rgba(249, 115, 22, 0.3)",
-    defaultRange: [300, 540], // 5 PM – 9 PM
+    defaultRange: [0, 60], // 12 PM – 1 PM
   },
   night: {
     label: "Night",
     color: "rgb(139, 92, 246)",
     fillColor: "rgba(139, 92, 246, 0.3)",
-    defaultRange: [540, 720], // 9 PM – 12 AM
+    defaultRange: [0, 60], // 12 PM – 1 PM
   },
 };

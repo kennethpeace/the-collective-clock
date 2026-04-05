@@ -54,9 +54,26 @@ export async function GET() {
     // Count unique user-category pairs / 3 categories ≈ unique respondents
     const uniqueUsers = new Set(rows.map((r) => r.userHash));
 
+    // Aggregate country stats (one count per unique user, not per row)
+    const userCountryMap = new Map<string, string | null>();
+    for (const row of rows) {
+      if (!userCountryMap.has(row.userHash)) {
+        userCountryMap.set(row.userHash, row.country ?? null);
+      }
+    }
+    const countryCounts: Record<string, number> = {};
+    for (const country of userCountryMap.values()) {
+      const key = country || "Unknown";
+      countryCounts[key] = (countryCounts[key] || 0) + 1;
+    }
+    const countryStats = Object.entries(countryCounts)
+      .map(([country, count]) => ({ country, count }))
+      .sort((a, b) => b.count - a.count);
+
     return NextResponse.json({
       data,
       totalResponses: uniqueUsers.size,
+      countryStats,
     });
   } catch (e) {
     console.error("Results error:", e);
