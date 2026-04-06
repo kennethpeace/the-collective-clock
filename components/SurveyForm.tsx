@@ -23,13 +23,23 @@ interface ResultsData {
   countryStats: CountryStat[];
 }
 
-export function SurveyForm() {
+interface SurveyFormProps {
+  initialResults?: ResultsData | null;
+}
+
+export function SurveyForm({ initialResults }: SurveyFormProps) {
   const [ranges, setRanges] = useState<Ranges>({ ...defaultRanges });
   const [submitting, setSubmitting] = useState(false);
   const [results, setResults] = useState<ResultsData | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [refreshing, setRefreshing] = useState(false);
   const countryRef = useRef<string | null>(null);
+
+  useEffect(() => {
+    if (initialResults) {
+      setResults(initialResults);
+    }
+  }, [initialResults]);
 
   // Detect country on mount (silent — no prompt to user)
   useEffect(() => {
